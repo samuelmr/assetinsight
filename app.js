@@ -8,13 +8,71 @@
 var express = require('express');
 var request = require('request');
 
+// Watson
+var https = require('https');
+var url = require('url');
+var querystring = require('querystring');
+var extend = require('util')._extend;
+var flatten = require('./flatten');
+
+
 // setup middleware
 var app = express();
 app.use(app.router);
 app.use(express.errorHandler());
+app.use(express.urlencoded()); // to support URL-encoded bodies
 app.use(express.static(__dirname + '/public')); //setup static public directory
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views'); //optional since express defaults to CWD/views
+
+
+// Watson
+// There are many useful environment variables available in process.env.
+// VCAP_APPLICATION contains useful information about a deployed application.
+var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
+// TODO: Get application information and use it in your app.
+
+// There are many useful environment variables available in process.env.
+// VCAP_APPLICATION contains useful information about a deployed application.
+var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
+// TODO: Get application information and use it in your app.
+
+// VCAP_SERVICES contains all the credentials of services bound to
+// this application. For details of its content, please refer to
+// the document or sample of each service.
+// If VCAP_SERVICES is undefined we use a local module as mockup
+
+// defaults for dev outside bluemix
+var service_url = 'http://127.0.0.1:3000/';
+var service_username = 'foo';
+var service_password = 'bar';
+
+if (process.env.VCAP_SERVICES) {
+  console.log('Parsing VCAP_SERVICES');
+  var services = JSON.parse(process.env.VCAP_SERVICES);
+  //service name, check the VCAP_SERVICES in bluemix to get the name of the services you have
+  var service_name = 'user_modeling';
+  
+  if (services[service_name]) {
+    var svc = services[service_name][0].credentials;
+    service_url = svc.url;
+    service_username = svc.username;
+    service_password = svc.password;
+  } else {
+    console.log('The service '+service_name+' is not in the VCAP_SERVICES, did you forget to bind it?');
+  }
+
+} else {
+  console.log('No VCAP_SERVICES found in ENV, using defaults for local development');
+}
+
+console.log('service_url = ' + service_url);
+console.log('service_username = ' + service_username);
+console.log('service_password = ' + new Array(service_password.length).join("X"));
+
+var auth = 'Basic ' + new Buffer(service_username + ':' + service_password).toString('base64');
+
+
 
 // render index page
 app.get('/', function(req, res){
@@ -27,13 +85,74 @@ app.get('/user/:name', function(req, res){
 });
 
 app.get('/quiz/:name?', function(req, res){
-  var username = req.params.name;
+  var username = req.params.name || "";
   res.render('quiz', {"username": username});
 });
 
-app.get('/personalize/:name?', function(req, res){
-  var username = req.params.name;
+app.all('/personalize/:name?', function(req, res){
+  var username = req.params.name || "";
+  var post_options = {"method": };
+  var post_data = req.param("q1") + " " + req.param("q2") + " " + req.param("q3");
+  console.log(post_data);
+
+
+/*
+  var post_req = method.request(post_options, function(res) {
+    console.log('STATUS:', res.statusCode, 'HEADERS:', JSON.stringify(res.headers));
+    res.setEncoding('utf8');
+    var respdata = "";
+    res.on('data', function (chunk) { respdata += chunk; });
+    res.on('error', function(e) { console.log("Got error: " + e.message); });
+    res.on('end', function() {
+      console.log("Request end");
+      var data = JSON.parse(respdata);
+      var list = flatten(data.tree);
+      resp.render('demo.html', { text: text, msg: "Content analyzed!", traits: list });
+    });
+  });
+  // Post the data
+  post_req.write(post_data);
+  post_req.end();
+  console.log("Request posted");  
   res.render('personalized', {"username": username});
+*/
+  // See User Modeling API docs. Path to profile analysis is /api/v2/profile
+  // remove the last / from service_url if exist
+  var parts = url.parse(service_url.replace(/\/$/,''));
+  
+  var profile_options = { host: parts.hostname,
+    port: parts.port,
+    path: parts.pathname + "/api/v2/profile",
+    method: 'POST',
+    headers: {
+      'Content-Type'  :'application/json',
+      'Authorization' :  auth }
+    };
+    
+  // create a profile request with the text and the htpps options and call it
+  create_profile_request(profile_options,post_data)(function(error,profile_string) {
+    if (error)  {
+      console.log("Watson didn't reply");
+    }
+    else {
+      // parse the profile and format it
+      var profile_json = JSON.parse(profile_string);
+      var flat_traits = flatten.flat(profile_json.tree);
+
+      // Extend the profile options and change the request path to get the visualization
+      // Path to visualization is /api/v2/visualize, add w and h to get 900x900 chart
+      var viz_options = extend(profile_options, { path :  parts.pathname + "/api/v2/visualize?w=900&h=900&imgurl=%2Fimages%2Fapp.png"})
+
+      // create a visualization request with the profile data
+      create_viz_request(viz_options,profile_string)(function(error,viz) {
+        if (error)  {
+          console.log("No visualization this time...");
+        }
+        else {
+          return res.render('personalized', {'content': req.body.content, 'traits': flat_traits, 'viz':viz});
+        };
+      });
+    }
 });
 
 app.get('/userdata/:id', function(req, res){
