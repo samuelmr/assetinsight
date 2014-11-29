@@ -3,14 +3,24 @@
 
 
 body
-  div(data-dojo-type="com.ibm.vis.widget.VisControl" id="graphDiv")
+  h1 My Asset Insight
+  nav
+   Get recommendations
+   li
+    a(href="/quiz") Take the quiz
+   li
+    a(id="fb" href="#fb") Connect Facebook
+   li
+    a(id="fb" href="#fb") Connect Twitter
+  div(data-dojo-type="com.ibm.vis.widget.VisControl" id="chartDiv") Loading. Please wait...
   script(src="/js/dojo/dojo.js" data-dojo-config="async:true, paths:{'com/ibm/vis':'../rave/com/ibm/vis'}, gfxRenderer: 'canvas,svg,silverlight'")
   script(type="text/javascript").
 
    var vizJSON = {};
    // load data
    require(["dojo/request", "dojo/json"], function(request, JSON){
-    request.get("/userdata/1", {handleAs: "json"}).then(
+    var user = Math.ceil(25473 * Math.random());
+    request.get("/userdata/" + user, {handleAs: "json"}).then(
         function(data){
              vizJSON = data;
         },
@@ -28,7 +38,7 @@ body
      //ready function is needed to ensure the rave system is properly loaded                
      ready(function() {
       parser.parse();
-      var widget = registry.byId("graphDiv");
+      var widget = registry.byId("chartDiv");
       widget.initRenderer().then(function(w) {
        widget.setSpecification(vizJSON);
       }, function(raveException) {

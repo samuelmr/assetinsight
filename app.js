@@ -24,18 +24,68 @@ app.get('/', function(req, res){
 // render index page
 app.get('/userdata/:id', function(req, res){
   var id = req.params.id;
+  var width = "800";
+  var height = "500";
+  var max = "9";
+  var cats = [
+                  "Real estate",
+                  "Deposit account",
+                  "Savings account",
+                  "Fund",
+                  "Shares",
+                  "Pension fund",
+               ];
   var values = [];
-  var url = 'http://208.43.108.6:1222/ibmlgeef/sb/etw/customer/' + id;
+  var url = 'http://208.43.108.6:1222/ibmlgeef/sb/pk/customer/' + id;
+  // var url = 'http://208.43.108.6:1222/ibmlgeef/sb/etw/customer/' + id;
   request(url, function(err, resp, body) {
     var json = JSON.parse(body);
+    var successful = 0;
     for (var i=0; i<json.length; i++) {
-      var security = json[i];
-      var amount = security.volumeSecurity;
-      var volatility = 10 * Math.random();
-      var liquidity = 20 * Math.random();
-      var category = json.productCatNm;
-      var name = '';
-      values.push([amount, volatility, liquidity, 0, 0]);
+      var prod = json[i];
+      // var amount = prod.volumeSecurity;
+      var amount = Math.round(prod.volumeSavings/10)/100;
+      if (!amount || (amount < 1)) {
+        continue;
+      }
+      var volatility = 0;
+      var liquidity = 0;
+      var category = Math.ceil((cats.length - 1) * Math.random());
+      switch (category) {
+        case 0: 
+          volatility = 3 * Math.random();
+          liquidity = (5 * Math.random()) + 5;
+          break;
+        case 1: 
+          volatility = 0.5 + Math.random();
+          liquidity = 0.5 + Math.random();
+          break;
+        case 2: 
+          volatility = 2.5 + Math.random();
+          liquidity = 3 + Math.random();
+          break;
+        case 3: 
+          volatility = (6 * Math.random()) + 4;
+          liquidity = (8 * Math.random()) + 2;
+          break;
+        case 4: 
+          volatility = (3 * Math.random()) + 7;
+          liquidity = (8 * Math.random()) + 2;
+          break;
+        case 5:
+          volatility = (5 * Math.random()) + 5;
+          liquidity = (2 * Math.random()) + 8;
+          break;
+        default:
+          volatility = 10 * Math.random();
+          liquidity = 10 * Math.random();
+      }
+      // var name = 0;
+      // values.push([amount, volatility, liquidity, category, name]);
+      values.push([amount, volatility, liquidity, category]);
+      if (++successful >= max) {
+        break;
+      }
     }
     var data = {
    "copyright": "Gonabai.com",
@@ -44,7 +94,7 @@ app.get('/userdata/:id', function(req, res){
          "fields": [
             {
                "format": {
-                  "suffix": " \u20AC"
+                  "suffix": " k\u20AC"
                },
                "id": "amount"
             },
@@ -57,32 +107,13 @@ app.get('/userdata/:id', function(req, res){
                // "min": 0
             },
             {
+               "categories": cats,
                "id": "category",
-               // "max": 50,
-               // "min": 0
-            },
-            {
-               "id": "name",
-               // "max": 50,
-               // "min": 0
             },
 /*
             {
-               "categories": [
-                  "Ultra",
-                  "Large",
-                  "Ifs",
-                  "Corp"
-               ],
-               "id": "segA"
+               "id": "name",
             },
-            {
-               "categories": [
-                  "Simul.",
-                  "2012"
-               ],
-               "id": "segB"
-            }
 */
          ],
          "id": "data",
@@ -94,6 +125,9 @@ app.get('/userdata/:id', function(req, res){
          "coordinates": {
             "dimensions": [
                {
+                  "scale": {
+                     "spans": [{"min": 0, "max": 10}],
+                  },
                   "axis": {
                      "lineStyle": {
                         "fill": {
@@ -127,6 +161,9 @@ app.get('/userdata/:id', function(req, res){
                   }
                },
                {
+                  "scale": {
+                     "spans": [{"min": 0, "max": 10}],
+                  },
                   "axis": {
                      "lineStyle": {
                         "fill": {
@@ -313,29 +350,34 @@ app.get('/userdata/:id', function(req, res){
                      "field": {
                         "$ref": "category"
                      },
-                     "id": "colorId",
+                     // "id": "colorId",
                      "modifies": "both",
                      "palette": [
-                        {
-                           "h": 0.0,
-                           "s": 0.65,
-                           "v": 0.85
-                        },
-                        {
-                           "h": 0.2194,
-                           "s": 0.65,
-                           "v": 0.75
-                        },
-                        {
-                           "h": 0.5805,
-                           "s": 0.7,
-                           "v": 0.85
-                        },
-                        {
-                           "h": 0.683,
-                           "s": 0.55,
-                           "v": 0.85
-                        }
+                       {
+                         "h": 0.2194,
+                         "s": 0.65,
+                         "v": 0.75
+                       },
+                       {
+                         "h": 0.4194,
+                         "s": 0.65,
+                         "v": 0.75
+                       },
+                       {
+                         "h": 0,
+                         "s": 0.65,
+                         "v": 0.85
+                       },
+                       {
+                         "h": 0.683,
+                         "s": 0.55,
+                         "v": 0.85
+                       },
+                       {
+                         "h": 0.5805,
+                         "s": 0.7,
+                         "v": 0.85
+                       }
                      ]
                   }
                ],
@@ -345,10 +387,16 @@ app.get('/userdata/:id', function(req, res){
                         {
                            "$ref": "category"
                         },
+/*
                         "\n",
                         {
-                           "$ref": "name"
+                           "$ref": "volatility"
                         },
+                        '/',
+                        {
+                           "$ref": "liquidity"
+                        },
+*/
                         "\n",
                         {
                            "$ref": "amount"
@@ -379,14 +427,14 @@ app.get('/userdata/:id', function(req, res){
                      "field": {
                         "$ref": "amount"
                      },
-                     "id": "sizeId",
+                     // "id": "sizeId",
                      "mapping": [
                         {
                            "at": "0%",
                            "size": "0%"
                         },
                         {
-                           "at": "100%",
+                           "at": "10%",
                            "size": "90%"
                         }
                      ]
@@ -439,8 +487,8 @@ app.get('/userdata/:id', function(req, res){
       }
    ],
    "size": {
-      "height": "100%",
-      "width": "100%"
+      "height": height,
+      "width": width
    },
    "style": {
       "fill": {
