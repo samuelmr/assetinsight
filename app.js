@@ -25,13 +25,6 @@ app.use(express.static(__dirname + '/public')); //setup static public directory
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views'); //optional since express defaults to CWD/views
 
-
-// Watson
-// There are many useful environment variables available in process.env.
-// VCAP_APPLICATION contains useful information about a deployed application.
-var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
-// TODO: Get application information and use it in your app.
-
 // There are many useful environment variables available in process.env.
 // VCAP_APPLICATION contains useful information about a deployed application.
 var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
@@ -632,16 +625,77 @@ app.get('/userdata/:id', function(req, res){
   });
 });
 
-// There are many useful environment variables available in process.env.
-// VCAP_APPLICATION contains useful information about a deployed application.
-var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
-// TODO: Get application information and use it in your app.
+// creates a request function using the https options and the text in content
+// the function that return receives a callback
+var create_profile_request = function(options,content) {
+  return function (/*function*/ callback) {
+    // create the post data to send to the User Modeling service
+    var post_data = {
+      'contentItems' : [{ 
+        'userid' : 'dummy',
+        'id' : 'dummyUuid',
+        'sourceid' : 'freetext',
+        'contenttype' : 'text/plain',
+        'language' : 'en',
+        'content': content
+      }]
+    };
+    // Create a request to POST to the User Modeling service
+    var profile_req = https.request(options, function(result) {
+      result.setEncoding('utf-8');
+      var response_string = '';
 
-// VCAP_SERVICES contains all the credentials of services bound to
-// this application. For details of its content, please refer to
-// the document or sample of each service.
-var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
-// TODO: Get service credentials and communicate with bluemix services.
+      result.on('data', function(chunk) {
+        response_string += chunk;
+      });
+      
+      result.on('end', function() {
+
+        if (result.statusCode != 200) {
+          var error = JSON.parse(response_string);
+          callback({'message': error.user_message}, null);
+        } else
+          callback(null,response_string);
+      });
+    });
+  
+    profile_req.on('error', function(e) {
+      callback(e,null);
+    });
+
+    profile_req.write(JSON.stringify(post_data));
+    profile_req.end();
+  }
+};
+
+// creates a request function using the https options and the profile 
+// the function that return receives a callback
+var create_viz_request = function(options,profile) {
+  return function (/*function*/ callback) {
+    // Create a request to POST to the User Modeling service
+    var viz_req = https.request(options, function(result) {
+      result.setEncoding('utf-8');
+      var response_string = '';
+
+      result.on('data', function(chunk) {
+        response_string += chunk;
+      });
+      
+      result.on('end', function() {
+        if (result.statusCode != 200) {
+          var error = JSON.parse(response_string);
+          callback({'message': error.user_message}, null);
+        } else
+          callback(null,response_string);      });
+    });
+  
+    viz_req.on('error', function(e) {
+      callback(e,null);
+    });
+    viz_req.write(profile);
+    viz_req.end();
+  }
+};
 
 // The IP address of the Cloud Foundry DEA (Droplet Execution Agent) that hosts this application:
 var host = (process.env.VCAP_APP_HOST || 'localhost');
