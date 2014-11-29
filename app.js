@@ -68,7 +68,7 @@ if (process.env.VCAP_SERVICES) {
 
 console.log('service_url = ' + service_url);
 console.log('service_username = ' + service_username);
-console.log('service_password = ' + new Array(service_password.length).join("X"));
+console.log('service_password = ' + new Array(service_password.length+1).join("X"));
 
 var auth = 'Basic ' + new Buffer(service_username + ':' + service_password).toString('base64');
 
@@ -91,12 +91,12 @@ app.get('/quiz/:name?', function(req, res){
 
 app.all('/personalize/:name?', function(req, res){
   var username = req.params.name || "";
-  var post_options = {"method": };
   var post_data = req.param("q1") + " " + req.param("q2") + " " + req.param("q3");
   console.log(post_data);
 
 
 /*
+  var post_options = {"method": "POST"};
   var post_req = method.request(post_options, function(res) {
     console.log('STATUS:', res.statusCode, 'HEADERS:', JSON.stringify(res.headers));
     res.setEncoding('utf8');
@@ -126,9 +126,10 @@ app.all('/personalize/:name?', function(req, res){
     method: 'POST',
     headers: {
       'Content-Type'  :'application/json',
-      'Authorization' :  auth }
-    };
-    
+      'Authorization' :  auth 
+    }
+  };
+
   // create a profile request with the text and the htpps options and call it
   create_profile_request(profile_options,post_data)(function(error,profile_string) {
     if (error)  {
@@ -141,7 +142,7 @@ app.all('/personalize/:name?', function(req, res){
 
       // Extend the profile options and change the request path to get the visualization
       // Path to visualization is /api/v2/visualize, add w and h to get 900x900 chart
-      var viz_options = extend(profile_options, { path :  parts.pathname + "/api/v2/visualize?w=900&h=900&imgurl=%2Fimages%2Fapp.png"})
+      var viz_options = extend(profile_options, { path :  parts.pathname + "/api/v2/visualize?w=900&h=900&imgurl=%2Fimages%2Fapp.png"});
 
       // create a visualization request with the profile data
       create_viz_request(viz_options,profile_string)(function(error,viz) {
@@ -153,6 +154,7 @@ app.all('/personalize/:name?', function(req, res){
         };
       });
     }
+  });
 });
 
 app.get('/userdata/:id', function(req, res){
