@@ -180,7 +180,7 @@ app.get('/userdata/:id', function(req, res){
                         "fill": "white",
                         "font": {
                            "family": "Arial",
-                           "size": "40"
+                           "size": "24"
                         },
                         "location": "inside",
                         "padding": 10,
@@ -200,6 +200,49 @@ app.get('/userdata/:id', function(req, res){
                   },
                   {
                      "value": "100%"
+                  }
+               ],
+               "style": {
+                  "fill": {
+                     "a": 0.2,
+                     "h": 0.7,
+                     "s": 0.55,
+                     "v": 0.87
+                  }
+               },
+               "type": "interval"
+            },
+            {
+               "label": [
+                  {
+                     "content": [
+                        "Low profit, usable immediately"
+                     ],
+                     "style": {
+                        "align": "end",
+                        "fill": "white",
+                        "font": {
+                           "family": "Arial",
+                           "size": "24"
+                        },
+                        "location": "inside",
+                        "padding": 10,
+                        "valign": "start"
+                     }
+                  }
+               ],
+               "position": [
+                  {
+                     "value": "0%"
+                  },
+                  {
+                     "value": "50%"
+                  },
+                  {
+                     "value": "0%"
+                  },
+                  {
+                     "value": "50%"
                   }
                ],
                "style": {

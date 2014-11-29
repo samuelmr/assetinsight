@@ -5,37 +5,3 @@ head
   meta(charset="utf-8")
   title Rich or Not?
   link(rel="stylesheet", href="/stylesheets/style.css")
-  script(src="/js/dojo/dojo.js" data-dojo-config="async:true, paths:{'com/ibm/vis':'../rave/com/ibm/vis'}, gfxRenderer: 'canvas,svg,silverlight'")
-  script(type="text/javascript").
-
-   var vizJSON = {};
-   // load data
-   require(["dojo/request", "dojo/json"], function(request, JSON){
-    request.get("/userdata/1", {handleAs: "json"}).then(
-        function(data){
-             vizJSON = data;
-        },
-        function(error){
-            console.log("An error occurred: " + error);
-        }
-    );
-   });
-   //load rave build layer
-   require(["com/ibm/vis/main"], function() {
-
-    //once we have the rave layer loaded, we can use all rave modules
-    require(["com/ibm/init/ready", "dojo/parser", "dijit/registry", "com/ibm/vis/widget/VisControl"], function(ready, parser, registry) {                
-                 
-     //ready function is needed to ensure the rave system is properly loaded                
-     ready(function() {
-      parser.parse();
-      var widget = registry.byId("visControl");
-      widget.initRenderer().then(function(w) {
-       widget.setSpecification(vizJSON);
-      }, function(raveException) {
-       // An optional error handler
-       alert(raveException.getMessage());
-      });
-     });
-    });
-   });
