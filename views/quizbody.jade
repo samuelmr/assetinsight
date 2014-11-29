@@ -1,0 +1,34 @@
+body
+  h1 My Asset Insight
+  h2 Personalization
+  form(method="get" action="/personalize")
+   fieldset
+    legend Tell us about yourself
+    p Please tell us about yourself so we can know you better and offer recommendations that suit you. Write at least 20 words into each box.    
+    label(for="q1") If you won a million euros in the lottery, how would you feel? What would you do? 
+      textarea(id="q1" rows="5" cols="80")
+      
+    label(for="q2") If you owned shares of a company that went bankrupt, how would you feel? What would you do?
+      textarea(id="q2" rows="5" cols="80")
+
+    label(for="q3") Describe the most important things in the world for you. Explain what makes them important.
+      textarea(id="q3" rows="5" cols="80")
+    input(type="submit" value="Personalize")
+
+   fieldset
+    legend Connect to your blog
+    p If you allow us to read your blog, we can estimate your personality based on them. The information is used only to build your profile. Your information will not be stored by us or given to other parties.
+    label blog URL
+    input(size="40")
+    input(type="submit" value="Personalize")
+
+   fieldset
+    legend Connect to Facebook
+    p If you allow us to read the messages you have written to Facebook, we can estimate your personality based on them. The information is used only to build your profile. Your information will not be stored by us or given to other parties.
+    input(type="submit" value="Personalize")
+
+   fieldset
+    legend Connect to Twitter
+    p If you allow us to read your tweets, we can estimate your personality based on them. The information is used only to build your profile. Your information will not be stored by us or given to other parties.
+    input(type="submit" value="Personalize")
+

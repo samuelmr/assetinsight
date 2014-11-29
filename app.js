@@ -21,15 +21,21 @@ app.get('/', function(req, res){
   res.render('index');
 });
 
-app.get('/quiz', function(req, res){
-  res.render('quiz');
+app.get('/user/:name', function(req, res){
+  var username = req.params.name;
+  res.render('user', {"username": username});
 });
 
-app.get('/harry', function(req, res){
-  res.render('harry');
+app.get('/quiz/:name?', function(req, res){
+  var username = req.params.name;
+  res.render('quiz', {"username": username});
 });
 
-// render index page
+app.get('/personalize/:name?', function(req, res){
+  var username = req.params.name;
+  res.render('personalized', {"username": username});
+});
+
 app.get('/userdata/:id', function(req, res){
   var id = req.params.id;
   var width = "800";
@@ -118,11 +124,6 @@ app.get('/userdata/:id', function(req, res){
                "categories": cats,
                "id": "category",
             },
-/*
-            {
-               "id": "name",
-            },
-*/
          ],
          "id": "data",
          "rows": values

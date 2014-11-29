@@ -1,0 +1,426 @@
+
+{
+  "copyright": "Gonabai.com",
+  "data": [
+    {
+      "fields": [
+        {
+          "format": {
+            "suffix": " k€"
+          },
+          "id": "amount"
+        },
+        {
+          "id": "volatility"
+        },
+        {
+          "id": "liquidity"
+        },
+        {
+          "categories": [
+            "Real estate",
+            "Deposit account",
+            "Savings account",
+            "Fund",
+            "Shares",
+            "Pension fund"
+          ],
+          "id": "category"
+        }
+      ],
+      "id": "data",
+      "rows": [
+        [
+          34.1,
+          0.7428749713581055,
+          0.8188464867416769,
+          1
+        ]
+      ]
+    }
+  ],
+  "grammar": [
+    {
+      "coordinates": {
+        "dimensions": [
+          {
+            "scale": {
+              "spans": [
+                {
+                  "min": 0,
+                  "max": 10
+                }
+              ]
+            },
+            "axis": {
+              "lineStyle": {
+                "fill": {
+                  "a": 0,
+                  "h": 0,
+                  "l": 0,
+                  "s": 0
+                }
+              },
+              "markStyle": {
+                "fill": {
+                  "a": 0,
+                  "h": 0,
+                  "l": 0,
+                  "s": 0
+                }
+              },
+              "tickStyle": {
+                "fill": {
+                  "a": 0.6,
+                  "h": 0,
+                  "l": 0,
+                  "s": 0
+                },
+                "font": {
+                  "family": "Arial",
+                  "size": "10.5pt"
+                },
+                "padding": 5
+              }
+            }
+          },
+          {
+            "scale": {
+              "spans": [
+                {
+                  "min": 0,
+                  "max": 10
+                }
+              ]
+            },
+            "axis": {
+              "lineStyle": {
+                "fill": {
+                  "a": 0.25,
+                  "h": 0,
+                  "l": 0,
+                  "s": 0
+                }
+              },
+              "markStyle": {
+                "fill": {
+                  "a": 0,
+                  "h": 0,
+                  "l": 0,
+                  "s": 0
+                }
+              },
+              "tickStyle": {
+                "fill": {
+                  "a": 0.6,
+                  "h": 0,
+                  "l": 0,
+                  "s": 0
+                },
+                "font": {
+                  "family": "Arial",
+                  "size": "10.5pt"
+                },
+                "padding": 3
+              }
+            }
+          }
+        ],
+        "style": {
+          "fill": "white",
+          "outline": "black",
+          "stroke": {
+            "width": 0.25
+          }
+        }
+      },
+      "elements": [
+        {
+          "label": [
+            {
+              "content": [
+                "High Risk, High Reward"
+              ],
+              "style": {
+                "align": "end",
+                "fill": "white",
+                "font": {
+                  "family": "Arial",
+                  "size": "24"
+                },
+                "location": "inside",
+                "padding": 10,
+                "valign": "start"
+              }
+            }
+          ],
+          "position": [
+            {
+              "value": "50%"
+            },
+            {
+              "value": "100%"
+            },
+            {
+              "value": "50%"
+            },
+            {
+              "value": "100%"
+            }
+          ],
+          "style": {
+            "fill": {
+              "a": 0.2,
+              "h": 0.7,
+              "s": 0.55,
+              "v": 0.87
+            }
+          },
+          "type": "interval"
+        },
+        {
+          "label": [
+            {
+              "content": [
+                "Low profit, usable immediately"
+              ],
+              "style": {
+                "align": "end",
+                "fill": "white",
+                "font": {
+                  "family": "Arial",
+                  "size": "24"
+                },
+                "location": "inside",
+                "padding": 10,
+                "valign": "start"
+              }
+            }
+          ],
+          "position": [
+            {
+              "value": "0%"
+            },
+            {
+              "value": "50%"
+            },
+            {
+              "value": "0%"
+            },
+            {
+              "value": "50%"
+            }
+          ],
+          "style": {
+            "fill": {
+              "a": 0.2,
+              "h": 0.7,
+              "s": 0.55,
+              "v": 0.87
+            }
+          },
+          "type": "interval"
+        },
+        {
+          "position": [
+            {
+              "value": 0
+            },
+            {
+              "value": 0
+            },
+            {
+              "value": -100
+            },
+            {
+              "value": 100
+            }
+          ],
+          "style": {
+            "fill": {
+              "a": 0.8
+            },
+            "stroke": {
+              "style": "Dash",
+              "width": 0.5
+            }
+          },
+          "type": "edge"
+        },
+        {
+          "position": [
+            {
+              "value": -100
+            },
+            {
+              "value": 100
+            },
+            {
+              "value": 0
+            },
+            {
+              "value": 0
+            }
+          ],
+          "style": {
+            "fill": {
+              "a": 0.8
+            },
+            "stroke": {
+              "style": "Dash",
+              "width": 0.5
+            }
+          },
+          "type": "edge"
+        },
+        {
+          "color": [
+            {
+              "field": {
+                "$ref": "category"
+              },
+              "modifies": "both",
+              "palette": [
+                {
+                  "h": 0.2194,
+                  "s": 0.65,
+                  "v": 0.75
+                },
+                {
+                  "h": 0.4194,
+                  "s": 0.65,
+                  "v": 0.75
+                },
+                {
+                  "h": 0,
+                  "s": 0.65,
+                  "v": 0.85
+                },
+                {
+                  "h": 0.683,
+                  "s": 0.55,
+                  "v": 0.85
+                },
+                {
+                  "h": 0.5805,
+                  "s": 0.7,
+                  "v": 0.85
+                }
+              ]
+            }
+          ],
+          "label": [
+            {
+              "content": [
+                {
+                  "$ref": "category"
+                },
+                "\n",
+                {
+                  "$ref": "amount"
+                }
+              ],
+              "style": {
+                "fill": {
+                  "a": 0.75
+                },
+                "location": "outside"
+              }
+            }
+          ],
+          "position": [
+            {
+              "field": {
+                "$ref": "volatility"
+              }
+            },
+            {
+              "field": {
+                "$ref": "liquidity"
+              }
+            }
+          ],
+          "size": [
+            {
+              "field": {
+                "$ref": "amount"
+              },
+              "mapping": [
+                {
+                  "at": "0%",
+                  "size": "0%"
+                },
+                {
+                  "at": "30%",
+                  "size": "60%"
+                },
+                {
+                  "at": "60%",
+                  "size": "60%"
+                },
+                {
+                  "at": "90%",
+                  "size": "90%"
+                }
+              ]
+            }
+          ],
+          "style": {
+            "fill": {
+              "colors": [
+                {
+                  "color": {
+                    "l": 1
+                  },
+                  "offset": 0
+                },
+                {
+                  "offset": 1
+                }
+              ],
+              "focus": {
+                "x": "30%",
+                "y": "30%"
+              },
+              "type": "radial"
+            },
+            "outline": {
+              "dValue": -0.25
+            },
+            "size": "22%%",
+            "stroke": {
+              "width": 0.5
+            }
+          },
+          "type": "point"
+        }
+      ],
+      "labelCollisionMethod": "none",
+      "style": {
+        "fill": {
+          "h": 0,
+          "l": 1,
+          "s": 0
+        },
+        "padding": {
+          "bottom": "2%",
+          "left": "2%",
+          "right": "2%",
+          "top": "5%"
+        }
+      }
+    }
+  ],
+  "size": {
+    "height": "500",
+    "width": "800"
+  },
+  "style": {
+    "fill": {
+      "h": 0,
+      "l": 1,
+      "s": 0
+    }
+  },
+  "version": "7.0"
+}
