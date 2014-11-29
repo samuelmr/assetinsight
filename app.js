@@ -21,6 +21,14 @@ app.get('/', function(req, res){
   res.render('index');
 });
 
+app.get('/quiz', function(req, res){
+  res.render('quiz');
+});
+
+app.get('/harry', function(req, res){
+  res.render('harry');
+});
+
 // render index page
 app.get('/userdata/:id', function(req, res){
   var id = req.params.id;
