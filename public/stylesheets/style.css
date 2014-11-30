@@ -1,4 +1,6 @@
 body, input, textarea {
+ background: #FFF;
+ color: #000;
  font-family: Lato,Helvetica,Arial,sans-serif;
  font-size: 19px;
 }
@@ -40,7 +42,7 @@ h1 {
   border-style: inset;
 }
 form, h2 {
-  margin: 1em 2em;
+  margin: 1em 2em 3em 2em;
 }
 fieldset, legend {
 }
@@ -65,4 +67,8 @@ label {
 }
 textarea {
   display: block;
+}
+input.login {
+  margin: 0 2em;
+  max-height: 1.5em;
 }

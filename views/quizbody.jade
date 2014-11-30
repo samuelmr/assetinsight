@@ -1,34 +1,40 @@
 body
   h1 My Asset Insight
   h2 Personalization
-  form(method="post" action="/personalize/#{locals.username}")
+  form(method="get" action="/personalize/#{locals.username}")
+   fieldset
+    legend Your targets
+    p Do you have a specific target or goal to save for?
+    label(for="what") What are you saving for?
+      textarea(id="what" name="what" rows="1" cols="80") #{locals.what}
+      
+    label(for="when") When you want or expect to reach your target?
+      textarea(id="when" name="when" rows="1" cols="80") #{locals.when}
+    p Choose a way to tell us about yourself below.
+
    fieldset
     legend Tell us about yourself
     p Please tell us about yourself so we can know you better and offer recommendations that suit you. Write at least 20 words into each box.    
     label(for="q1") If you won a million euros in the lottery, how would you feel? What would you do? 
-      textarea(id="q1" name="q1" rows="7" cols="80")
+      textarea(id="q1" name="q1" rows="7" cols="80") #{locals.q1}
       
     label(for="q2") If you owned shares of a company that went bankrupt, how would you feel? What would you do?
-      textarea(id="q2" name="q2" rows="7" cols="80")
+      textarea(id="q2" name="q2" rows="7" cols="80") #{locals.q2}
 
     label(for="q3") Describe the most important things in the world for you. Explain what makes them important.
-      textarea(id="q3" name="q3" rows="7" cols="80")
+      textarea(id="q3" name="q3" rows="7" cols="80") #{locals.q3}
     input(type="submit" value="Personalize")
 
    fieldset
-    legend Connect to your blog
+    legend Connect your blog
     p If you allow us to read your blog, we can estimate your personality based on them. The information is used only to build your profile. Your information will not be stored by us or given to other parties.
     label The URL of your blog
     input(size="70" value="http://www.")
     input(type="submit" value="Personalize")
 
    fieldset
-    legend Connect to Facebook
-    p If you allow us to read the messages you have written to Facebook, we can estimate your personality based on them. The information is used only to build your profile. Your information will not be stored by us or given to other parties.
-    input(type="submit" value="Personalize")
-
-   fieldset
-    legend Connect to Twitter
-    p If you allow us to read your tweets, we can estimate your personality based on them. The information is used only to build your profile. Your information will not be stored by us or given to other parties.
-    input(type="submit" value="Personalize")
-
+    legend Connect your social platforms
+    p If you allow us to read your tweets or the messages you have written to Facebook or Google+, we can estimate your personality based on them. The information is used only to build your profile. Your information will not be stored by us or given to other parties.
+    input(type="image" src="/images/fb.png" class="login")
+    input(type="image" src="/images/twitter.jpeg" class="login")
+    input(type="image" src="/images/gplus.jpeg" class="login")

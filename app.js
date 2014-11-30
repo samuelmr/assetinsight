@@ -65,8 +65,6 @@ console.log('service_password = ' + new Array(service_password.length+1).join("X
 
 var auth = 'Basic ' + new Buffer(service_username + ':' + service_password).toString('base64');
 
-
-
 // render index page
 app.get('/', function(req, res){
   res.render('index');
@@ -79,11 +77,17 @@ app.get('/user/:name', function(req, res){
 
 app.get('/quiz/:name?', function(req, res){
   var username = req.params.name || "";
-  res.render('quiz', {"username": username});
+  var what, when, q1, q2, q3;
+  what = when = q1 = q2 = q3 = "";
+  
+  res.render('quiz', {"username": username, "what": what, "when": when, "q1": q1, "q2": q2, "q3": q3});
 });
 
 app.all('/personalize/:name?', function(req, res){
   var username = req.params.name || "";
+  console.log("params: " + req.params);
+  console.log("body: " + req.body);
+  console.log("what: " + req.param("what"));
   var post_data = req.param("q1") + " " + req.param("q2") + " " + req.param("q3");
   console.log(post_data);
 
@@ -147,6 +151,7 @@ app.all('/personalize/:name?', function(req, res){
         };
       });
     }
+    res.render('personalized');
   });
 });
 
