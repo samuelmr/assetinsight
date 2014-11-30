@@ -7,7 +7,7 @@ body
 
   script(src="/js/dojo/dojo.js" data-dojo-config="async:true, paths:{'com/ibm/vis':'../rave/com/ibm/vis'}, gfxRenderer: 'canvas,svg,silverlight'")
   script(type="text/javascript").
-   var username = "#{locals.username}";
+   var username = '#{locals.username}' || 'joe';
    var vizJSON = {};
    var suggJSON = {};
    var widget;

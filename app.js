@@ -93,7 +93,6 @@ app.get('/quiz/:name?', function(req, res){
       q1 = "";
       q2 = "";
       q3 = "";
-      hidden = "";
       break;
     case "joe":
       what = "I want to save for security - in case everything doesn't work out as planned."
@@ -109,7 +108,6 @@ app.get('/quiz/:name?', function(req, res){
       q1 = "We're going to become debt free, first and foremost. We're going to keep the same cars we're driving and pay off the mortgage. We have some home improvements in mind. But right now, I'm going to have lunch with my husband. We will also help children with student loans, and donate to charities.";
       q2 = "";
       q3 = "";
-      hidden = "";
       break;
     case "tina":
       what = "I want to travel around the world in one year."
@@ -117,7 +115,6 @@ app.get('/quiz/:name?', function(req, res){
       q1 = "";
       q2 = "";
       q3 = "";
-      hidden = "";
       break;
   }  
   res.render('quiz', {"username": username, "what": what, "when": when, "q1": q1, "q2": q2, "q3": q3, "hidden": hidden});
