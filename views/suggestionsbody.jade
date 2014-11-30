@@ -3,17 +3,27 @@ body
   div(data-dojo-type="com.ibm.vis.widget.VisControl" id="bubbleChartDiv") Loading. Please wait...
 
   div(class="getpersonal")
-    a(href="/quiz/#{locals.username}") Get personalized recommendations
+    a(href="#bubbleChartDiv" onclick="toggleRecommendations(this); return false;") Show recommendations
 
   script(src="/js/dojo/dojo.js" data-dojo-config="async:true, paths:{'com/ibm/vis':'../rave/com/ibm/vis'}, gfxRenderer: 'canvas,svg,silverlight'")
   script(type="text/javascript").
    var username = "#{locals.username}";
    var vizJSON = {};
+   var suggJSON = {};
+   var widget;
    // load data
    require(["dojo/request", "dojo/json"], function(request, JSON){
     request.get("/" + username + ".json", {handleAs: "json"}).then(
         function(data){
              vizJSON = data;
+        },
+        function(error){
+            console.log("An error occurred: " + error);
+        }
+    );
+    request.get("/" + username + "-suggestion.json", {handleAs: "json"}).then(
+        function(data){
+             suggJSON = data;
         },
         function(error){
             console.log("An error occurred: " + error);
@@ -29,7 +39,7 @@ body
      //ready function is needed to ensure the rave system is properly loaded                
      ready(function() {
       parser.parse();
-      var widget = registry.byId("bubbleChartDiv");
+      widget = registry.byId("bubbleChartDiv");
       widget.initRenderer().then(function(w) {
        widget.setSpecification(vizJSON);
       }, function(raveException) {
@@ -39,3 +49,13 @@ body
      });
     });
    });
+   function toggleRecommendations(e) {
+     if (e.innerHTML.indexOf('recommendations') > 0) {
+       e.innerHTML = "Show my current assets";
+       widget.setSpecification(suggJSON);
+     }
+     else {
+       e.innerHTML = "Show recommendations";
+       widget.setSpecification(vizJSON);
+     }
+   }

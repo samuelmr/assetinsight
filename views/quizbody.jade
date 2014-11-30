@@ -1,7 +1,8 @@
 body
   h1 My Asset Insight
   h2 Personalization
-  form(method="get" action="/personalize/#{locals.username}")
+  form(method="post" action="/personalize/#{locals.username}")
+   input(type="hidden" name="hidden" value="#{locals.hidden}")
    fieldset
     legend Your targets
     p Do you have a specific target or goal to save for?
@@ -14,7 +15,7 @@ body
 
    fieldset
     legend Tell us about yourself
-    p Please tell us about yourself so we can know you better and offer recommendations that suit you. Write at least 20 words into each box.    
+    p Please tell us about yourself so we can know you better and offer recommendations that suit you. Your texts should contain at least a 100 characters together.
     label(for="q1") If you won a million euros in the lottery, how would you feel? What would you do? 
       textarea(id="q1" name="q1" rows="7" cols="80") #{locals.q1}
       

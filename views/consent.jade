@@ -1,0 +1,37 @@
+doctype html
+html
+ head
+  meta(charset="UTF-8")
+  title Allow data transfer?
+  style.
+   body {
+    margin: 10% 20% 20% 20%;
+   }
+   h1 {
+   }
+   .approve {
+    background-color: #9C9;
+    border: 2px outset #9C9;
+    color: #000;
+    display: inline-block;
+    font-size: larger;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    text-decoration: none;
+   }
+   .cancel {
+    color: blue;
+    margin: 0 2em;
+    text-decoration: underline;
+   }
+ body
+  h1 Asset Insight is requesting your data
+  p The website called Asset Insight wants to access your financial information. If you allow, the following information is transferred:
+  ul
+   li Your accounts and their balances
+   li Your shares, funds and other investments (names and current valuations)
+   li Your loans (mortgages)
+  div.consent
+    a.approve(href="/user/#{locals.username}") Approve
+    span.cancel Cancel
+    

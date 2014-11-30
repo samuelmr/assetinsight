@@ -15,12 +15,11 @@ var querystring = require('querystring');
 var extend = require('util')._extend;
 var flatten = require('./flatten');
 
-
 // setup middleware
 var app = express();
-app.use(app.router);
 app.use(express.errorHandler());
-app.use(express.urlencoded()); // to support URL-encoded bodies
+app.use(express.urlencoded());
+app.use(app.router);
 app.use(express.static(__dirname + '/public')); //setup static public directory
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views'); //optional since express defaults to CWD/views
@@ -36,9 +35,9 @@ var appInfo = JSON.parse(process.env.VCAP_APPLICATION || "{}");
 // If VCAP_SERVICES is undefined we use a local module as mockup
 
 // defaults for dev outside bluemix
-var service_url = 'http://127.0.0.1:3000/';
-var service_username = 'foo';
-var service_password = 'bar';
+var service_url = "https://gateway.watsonplatform.net/systemu/service/";
+var service_username = "72a773d7-1211-4b11-ba6b-bdae4a66a18b";
+var service_password = "pL83Rbw89Fhf";
 
 if (process.env.VCAP_SERVICES) {
   console.log('Parsing VCAP_SERVICES');
@@ -70,6 +69,12 @@ app.get('/', function(req, res){
   res.render('index');
 });
 
+// render index page
+app.get('/consent/:name?', function(req, res){
+  var username = req.params.name || "";
+  res.render('consent', {"username": username});
+});
+
 app.get('/user/:name', function(req, res){
   var username = req.params.name;
   res.render('user', {"username": username});
@@ -77,19 +82,56 @@ app.get('/user/:name', function(req, res){
 
 app.get('/quiz/:name?', function(req, res){
   var username = req.params.name || "";
-  var what, when, q1, q2, q3;
+  var what, when, q1, q2, q3, hidden;
   what = when = q1 = q2 = q3 = "";
-  
-  res.render('quiz', {"username": username, "what": what, "when": when, "q1": q1, "q2": q2, "q3": q3});
+  // just something copypasted from somewhere on the net (http://www.amosweb.com/cgi-bin/awb_nav.pl?s=wpd&c=dsp&k=bank+assets)
+  hidden = "Before getting into the details of bank assets, consider this representative, hypothetical balance sheet for OmniBank (a representative, hypothetical bank) presented in the exhibit to the right. Like any balance sheet this one for the OmniBank is divided into two sides--assets on the left and liabilities and net worth on the right. As a balance sheet, both sides are equal--they balance. The assets on the left-hand side of the balance sheet are what OmniBank owns. Liabilities on the right-hand side of the balance sheet are what OmniBank owes. Net worth, also on the right-hand side of the balance sheet, is then the difference between assets and liabilities. In effect, net worth is what the bank owes to the owners of OmniBank. As a profit-seeking business, OmniBank's primary duty is to adjust these assets and liabilities to acquire profit. Of course, ALL businesses acquire profit by adjusting assets and liabilities. They boost revenue assets and reduce cost liabilities. But, unlike other types of producers, banks do not make adjustments with real production. In fact, the accounting process of adjusting entries in the balance sheet IS OmniBank's production. OmniBank's business is to change these entries.";
+  switch (username) {
+    case "harry":
+      what = "I want to make sure I'll not be poor when I retire 10 years from now."
+      when = "I want to start now and save until retirement."
+      q1 = "";
+      q2 = "";
+      q3 = "";
+      hidden = "";
+      break;
+    case "joe":
+      what = "I want to save for security - in case everything doesn't work out as planned."
+      when = "I want to start now and keep saving until I get rich enough to stop."
+      q1 = "";
+      q2 = "";
+      q3 = "";
+      hidden = "I bought an apartment for millions. I rebuilt it. Feng Shui! I bought art. I played a lot of poker. I began investing in companies. A million here. A few hundred thousand there. One IPO, I put $2 million in at $20 and watched it go to $0. They made wireless devices for deaf people. Huge market. I started another company. CMGI, Allen & Co, Investcorp, Henry Kravis, and a billion others invested. I started a VC fund. I invested in more companies. Then Internet stocks started to go down. This is ridiculous, I thought. The Internet is here to stay. I knew nothing about stocks or valuations or anything resembling rational thought. I doubled down. Then quadrupled down. Then 8-upled down. I felt like I was going to die. That zero equals death. I couldn’t believe how stupid I had been. I had lost all my friends. Nobody returned calls. I would go to the ATM machine and feel my blood going through my whole body when I saw how much was left. I was going to zero and nothing could stop it. There were no jobs,  there was nothing."
+      break;
+    case "lisa":
+      what = "I want to travel around the world in one year."
+      when = "I want to leave before I turn 30, so 2021 at the latest."
+      q1 = "We're going to become debt free, first and foremost. We're going to keep the same cars we're driving and pay off the mortgage. We have some home improvements in mind. But right now, I'm going to have lunch with my husband. We will also help children with student loans, and donate to charities.";
+      q2 = "";
+      q3 = "";
+      hidden = "";
+      break;
+    case "tina":
+      what = "I want to travel around the world in one year."
+      when = "I want to leave before I turn 30, so 2021 at the latest."
+      q1 = "";
+      q2 = "";
+      q3 = "";
+      hidden = "";
+      break;
+  }  
+  res.render('quiz', {"username": username, "what": what, "when": when, "q1": q1, "q2": q2, "q3": q3, "hidden": hidden});
 });
 
 app.all('/personalize/:name?', function(req, res){
   var username = req.params.name || "";
-  console.log("params: " + req.params);
-  console.log("body: " + req.body);
-  console.log("what: " + req.param("what"));
-  var post_data = req.param("q1") + " " + req.param("q2") + " " + req.param("q3");
-  console.log(post_data);
+  // console.log("params: " + req.params);
+  // console.log("body: " + req.body);
+  // console.log("what: " + req.param("what"));
+  var post_data = req.param("what") + " " + req.param("when") + " " + 
+                  req.param("q1") + " " + req.param("q2") + " " + req.param("q3")+ 
+                  req.param("hidden");
+  // console.log(post_data);
 
 
 /*
@@ -113,8 +155,7 @@ app.all('/personalize/:name?', function(req, res){
   console.log("Request posted");  
   res.render('personalized', {"username": username});
 */
-  // See User Modeling API docs. Path to profile analysis is /api/v2/profile
-  // remove the last / from service_url if exist
+
   var parts = url.parse(service_url.replace(/\/$/,''));
   
   var profile_options = { host: parts.hostname,
@@ -130,10 +171,10 @@ app.all('/personalize/:name?', function(req, res){
   // create a profile request with the text and the htpps options and call it
   create_profile_request(profile_options,post_data)(function(error,profile_string) {
     if (error)  {
-      console.log("Watson didn't reply");
+      console.log("Watson didn't reply. " + error.message);
+      return res.render('personalized', {"username": username});
     }
     else {
-      // parse the profile and format it
       var profile_json = JSON.parse(profile_string);
       var flat_traits = flatten.flat(profile_json.tree);
 
@@ -144,15 +185,20 @@ app.all('/personalize/:name?', function(req, res){
       // create a visualization request with the profile data
       create_viz_request(viz_options,profile_string)(function(error,viz) {
         if (error)  {
-          console.log("No visualization this time...");
+          console.log("No visualization this time..." + error.message);
+          return res.render('personalized', {"username": username});
         }
         else {
-          return res.render('personalized', {'content': req.body.content, 'traits': flat_traits, 'viz':viz});
+          return res.render('personalized', {"username": username, 'content': req.body.content, 'traits': flat_traits, 'viz':viz});
         };
       });
     }
-    res.render('personalized');
   });
+});
+
+app.get('/suggestions/:name?', function(req, res){
+  var username = req.params.name || "";
+  res.render('suggestions', {"username": username});
 });
 
 app.get('/userdata/:id', function(req, res){

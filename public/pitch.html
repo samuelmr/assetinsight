@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <head>
 <meta charset="UTF-8"/>
-<title>Asset Insight</title>
+<meta name="viewport" content="width=1200" />
+<meta name="apple-mobile-web-app-capable" content="yes" /><title>Asset Insight</title>
 <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet" type="text/css" />
 </head>
 <style type="text/css">
@@ -27,10 +28,102 @@ iframe.tablet {
   border-radius: 16px;
   padding: 24px;
 }
+.step {
+    position: relative;
+    width: 1200px;
+    padding: 10px 40px;
+    margin: 10px auto;
+
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:    border-box;
+    -ms-box-sizing:     border-box;
+    -o-box-sizing:      border-box;
+    box-sizing:         border-box;
+
+    font-family: 'PT Serif', georgia, serif;
+    font-size: 48px;
+    line-height: 1.5;
+}
+.impress-enabled .step {
+    margin: 0;
+    opacity: 0.3;
+
+    -webkit-transition: opacity 1s;
+    -moz-transition:    opacity 1s;
+    -ms-transition:     opacity 1s;
+    -o-transition:      opacity 1s;
+    transition:         opacity 1s;
+}
+.impress-enabled .step.active {
+    opacity: 1;
+}
+.slide {
+    display: block;
+
+    width: 1200px;
+    height: 800px;
+    padding: 0px 60px;
+
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, .3);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+
+    color: rgb(102, 102, 102);
+    text-shadow: 0 2px 2px rgba(0, 0, 0, .1);
+
+    font-size: 40px;
+    line-height: 1.5;
+    letter-spacing: -1px;
+    
+    overflow: auto;
+}
+.personalized {
+    border-width: 0 !important;
+    box-shadow: none !important;
+}
+.slide p {
+    padding: 0 10%;
+    text-align: center;
+}
+.slide h2 {
+    text-align: center;
+}
+.slide address {
+    text-align: center;
+}
+.slide em {
+    font-weight: bold;
+    font-style: normal;
+
+    display: block;
+    -webkit-transition: 0.5s;
+    -moz-transition:    0.5s;
+    -ms-transition:     0.5s;
+    -o-transition:      0.5s;
+    transition:         0.5s;
+    
+    -webkit-transform: scale(1.2);
+    -moz-transform:    scale(1.2);
+    -ms-transform:     scale(1.2);
+    -o-transform:      scale(1.2);
+    transform:         scale(1.2);
+
+    -webkit-transition-delay: 1s;
+    -moz-transition-delay:    1s;
+    -ms-transition-delay:     1s;
+    -o-transition-delay:      1s;
+    transition-delay:         1s;
+}
 </style>
-<body>
+<body class="impress-not-supported">
+<div id="impress">
+<div id="top" class="step slide" data-x="0" data-y="-1000">
 <h1>Asset Insight</h1>
-<div class="slide">
+<p>Empowering bank customers<br />to make informed investment choices<br />that suit their needs.</p>
+<address>Samuel Rinnetmäki</address>
+</div>
+<div id="joe" class="step slide" data-x="-2250" data-y="0">
 <h2>Joe</h2>
 <ul>
 <li>startup entrepreneur</li>
@@ -39,7 +132,7 @@ iframe.tablet {
 <li>"What's the correct way for me to save?"</li>
 </ul>
 </div>
-<div class="slide">
+<div id="tina" class="step slide" data-x="-750" data-y="0">
 <h2>Tina</h2>
 <ul>
 <li>Wants to take a sabbatical year to travel the world</li>
@@ -48,7 +141,7 @@ iframe.tablet {
 <li>"What's the correct way for me to save?"</li>
 </ul>
 </div>
-<div class="slide">
+<div id="lisa" class="step slide" data-x="750" data-y="0">
 <h2>Lisa and Jack</h2>
 <ul>
 <li>Lisa is leading a successful career</li>
@@ -57,7 +150,7 @@ iframe.tablet {
 <li>"What's the correct way for me to save?"</li>
 </ul>
 </div>
-<div class="slide">
+<div id="harry" class="step slide" data-x="2250" data-y="0">
 <h2>Harry</h2>
 <ul>
 <li>About 10 years to retirement</li>
@@ -66,7 +159,7 @@ iframe.tablet {
 <li>"What's the correct way for me to save?"</li>
 </ul>
 </div>
-<div class="slide">
+<div id="characteristics" class="step slide" data-x="0" data-y="1000">
 <h2>Common characteristics</h2>
 <ul>
 <li>They want to compare alternatives</li>
@@ -75,40 +168,39 @@ iframe.tablet {
 <li>They could listen to unbiased expert advice</li>
 </ul>
 </div>
-<div class="slide">
+<div id="problem" class="step slide" data-x="-750" data-y="2000">
 <h2>The problem</h2>
 <ul>
 <li>Some people want to invest but don’t know how</li>
-<li>They want to buy investment products but don’t want to be sold to</li>
 <li>They prefer their own research (outside office hours) over a discussion with an advisor</li>
 <li>They find it difficult to apply the generic information available to their individual situations</li>
 </ul>
 </div>
-<div class="slide">
-<h2>By the way…</h2>
-<p>By empowering the customers, the bank can <em>increase sales</em> and <em>customer satisfaction</em> while <em>reducing costs</em>.</p>
-</div>
-<div class="slide">
+<div id="solution" class="step slide" data-x="750" data-y="2000">
 <h2>The solution</h2>
 <p>Better tools for individual customers to find investment products that suits them best.</p>
 </div>
-<div class="slide">
-<h2>Simple view to your assets</h2>
-<iframe src="/	"></iframe>
+<div id="btw" class="step slide" data-x="2250" data-y="2000">
+<h2>By the way…</h2>
+<p>By empowering the customers, the bank can <em>increase sales</em> and <em>enhance customer satisfaction</em> while <em>reducing costs</em> of operations.</p>
 </div>
-<div class="slide">
-<h2>Tina</h2>
+<div id="idea" class="step slide" data-x="0" data-y="3000">
+<h2>Simple view to your assets</h2>
+<iframe src="/"></iframe>
+</div>
+<div id="tina-personalized" class="personalized step slide" data-x="-2250" data-y="4000">
 <iframe src="/user/tina" class="tablet"></iframe>
 </div>
-<div class="slide">
+<div id="joe-personalized" class="personalized step slide" data-x="-750" data-y="4000">
+<iframe src="/suggestions/joe" class="tablet"></iframe>
 </div>
-<div class="slide">
+<div id="lisa-personalized" class="personalized step slide" data-x="750" data-y="4000">
+<iframe src="/suggestions/lisa" class="tablet"></iframe>
 </div>
-<div class="slide">
+<div id="harry-personalized" class="personalized step slide" data-x="2250" data-y="4000">
+<iframe src="/suggestions/harry" class="tablet"></iframe>
 </div>
-<div class="slide">
 </div>
-<div class="slide">
-</div>
-
+<script src="/js/impress.js"></script>
+<script>impress().init();</script>
 </body>

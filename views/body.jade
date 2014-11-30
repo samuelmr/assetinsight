@@ -1,7 +1,7 @@
 body
   h1 My Asset Insight
 
-  div(data-dojo-type="com.ibm.vis.widget.VisControl" id="chartDiv") Loading. Please wait...
+  div(data-dojo-type="com.ibm.vis.widget.VisControl" id="bubbleChartDiv") Loading. Please wait...
 
   div(class="getpersonal")
     a(href="/quiz/") Get personalized recommendations
@@ -20,7 +20,7 @@ body
        require(["com/ibm/init/ready", "dojo/parser", "dijit/registry", "com/ibm/vis/widget/VisControl"], function(ready, parser, registry) {                
         ready(function() {
          parser.parse();
-         var widget = registry.byId("chartDiv");
+         var widget = registry.byId("bubbleChartDiv");
          widget.initRenderer().then(function(w) {
           widget.setSpecification(vizJSON);
          }, function(raveException) {
